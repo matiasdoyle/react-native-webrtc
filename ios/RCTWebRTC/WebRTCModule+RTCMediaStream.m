@@ -40,9 +40,10 @@ typedef void (^NavigatorUserMediaSuccessCallback)(RTCMediaStream *mediaStream);
 
 - (RTCMediaConstraints *)defaultMediaStreamConstraints {
   NSDictionary *mandatoryConstraints
-      = @{ kRTCMediaConstraintsMinWidth     : @"1280",
-           kRTCMediaConstraintsMinHeight    : @"720",
-           kRTCMediaConstraintsMinFrameRate : @"30" };
+      = @{ kRTCMediaConstraintsMaxWidth      : @"640",
+           kRTCMediaConstraintsMaxHeight     : @"512",
+           kRTCMediaConstraintsMaxAspectRatio: @"1.25",
+           kRTCMediaConstraintsMinFrameRate  : @"30" };
   RTCMediaConstraints* constraints =
   [[RTCMediaConstraints alloc]
    initWithMandatoryConstraints:mandatoryConstraints
@@ -153,7 +154,7 @@ RCT_EXPORT_METHOD(getUserMedia:(NSDictionary *)constraints
          mediaStream:(RTCMediaStream *)mediaStream {
   // If mediaStream contains no audioTracks and the constraints request such a
   // track, then run an iteration of the getUserMedia() algorithm to obtain
-  // local audio content. 
+  // local audio content.
   if (mediaStream.audioTracks.count == 0) {
     // constraints.audio
     id audioConstraints = constraints[@"audio"];
