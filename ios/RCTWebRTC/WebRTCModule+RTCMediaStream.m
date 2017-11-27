@@ -43,7 +43,7 @@ typedef void (^NavigatorUserMediaSuccessCallback)(RTCMediaStream *mediaStream);
       = @{ kRTCMediaConstraintsMaxWidth      : @"640",
            kRTCMediaConstraintsMaxHeight     : @"512",
            kRTCMediaConstraintsMaxAspectRatio: @"1.25",
-           kRTCMediaConstraintsMinFrameRate  : @"30" };
+           kRTCMediaConstraintsMinFrameRate  : @"10" };
   RTCMediaConstraints* constraints =
   [[RTCMediaConstraints alloc]
    initWithMandatoryConstraints:mandatoryConstraints
