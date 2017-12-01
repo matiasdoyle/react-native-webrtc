@@ -69,43 +69,48 @@ var {
 } = WebRTC;
 ```
 Anything about using RTCPeerConnection, RTCSessionDescription and RTCIceCandidate is like browser.  
-Support most WebRTC APIs, please see the [Document](https://developer.mozilla.org/zh-TW/docs/Web/API/RTCPeerConnection).
+Support most WebRTC APIs, please see the [Document](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection).
 ```javascript
 var configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
 var pc = new RTCPeerConnection(configuration);
 
 let isFront = true;
-MediaStreamTrack.getSources(sourceInfos => {
-  console.log(sourceInfos);
-  let videoSourceId;
-  for (const i = 0; i < sourceInfos.length; i++) {
-    const sourceInfo = sourceInfos[i];
-    if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
-      videoSourceId = sourceInfo.id;
+MediaStreamTrack
+  .getSources()
+  .then(sourceInfos => {
+    console.log(sourceInfos);
+    let videoSourceId;
+    for (let i = 0; i < sourceInfos.length; i++) {
+      const sourceInfo = sourceInfos[i];
+      if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
+        videoSourceId = sourceInfo.id;
+      }
     }
-  }
-  getUserMedia({
-    audio: true,
-    video: {
-      mandatory: {
-        minWidth: 500, // Provide your own width, height and frame rate here
-        minHeight: 300,
-        minFrameRate: 30
-      },
-      facingMode: (isFront ? "user" : "environment"),
-      optional: (videoSourceId ? [{sourceId: videoSourceId}] : [])
-    }
-  }, function (stream) {
+    return getUserMedia({
+      audio: true,
+      video: {
+        mandatory: {
+          minWidth: 500, // Provide your own width, height and frame rate here
+          minHeight: 300,
+          minFrameRate: 30
+        },
+        facingMode: (isFront ? "user" : "environment"),
+        optional: (videoSourceId ? [{sourceId: videoSourceId}] : [])
+      }
+    });
+  })
+  .then(stream => {
     console.log('dddd', stream);
-    callback(stream);
-  }, logError);
-});
+    return stream
+  })
+  .catch(logError);
 
-pc.createOffer(function(desc) {
-  pc.setLocalDescription(desc, function () {
+pc.createOffer()
+  .then(pc.setLocalDescription)
+  .then(() => {
     // Send pc.localDescription to peer
-  }, function(e) {});
-}, function(e) {});
+  })
+  .catch(logError);
 
 pc.onicecandidate = function (event) {
   // send event.candidate to peer
