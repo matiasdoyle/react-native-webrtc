@@ -43,7 +43,7 @@ function normalizeMediaConstraints(constraints, mediaType) {
     ; // to be added
   } else {
     // NOTE: android only support minXXX currently
-    for (const param of ['minWidth', 'minHeight', 'minFrameRate', 'maxWidth', 'maxHeight', 'maxFrameRate', ]) {
+    for (const param of ['minWidth', 'minHeight', 'minFrameRate', 'maxWidth', 'maxHeight', 'maxFrameRate', 'minAspectRatio', 'maxAspectRatio']) {
       if (constraints.mandatory.hasOwnProperty(param)) {
         // convert to correct type here so that native can consume directly without worries.
         constraints.mandatory[param] = (Platform.OS === 'ios'
