@@ -24,8 +24,4 @@ public class VideoRotationSink implements VideoSink {
             this.surfaceViewRenderer.onFrame(videoFrame);
         }
     }
-
-    public void release() {
-      this.surfaceViewRenderer = null;
-    }
 }

@@ -410,7 +410,6 @@ public class WebRTCView extends ViewGroup {
             }
 
             surfaceViewRenderer.release();
-            rotationSink.release();
             rendererAttached = false;
 
             // Since this WebRTCView is no longer rendering anything, make sure
