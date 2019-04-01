@@ -161,6 +161,12 @@ public class WebRTCView extends ViewGroup {
     private final SurfaceViewRenderer surfaceViewRenderer;
 
     /**
+     * The VideoRotationSink ensures each frame has the correct rotation before
+     * sending it to the SurfaceViewRenderer for rendering.
+     */
+    private VideoRotationSink rotationSink;
+
+    /**
      * The {@code VideoTrack}, if any, rendered by this {@code WebRTCView}.
      */
     private VideoTrack videoTrack;
@@ -170,6 +176,8 @@ public class WebRTCView extends ViewGroup {
 
         surfaceViewRenderer = new SurfaceViewRenderer(context);
         addView(surfaceViewRenderer);
+
+        rotationSink = new VideoRotationSink(surfaceViewRenderer);
 
         setMirror(false);
         setScalingType(DEFAULT_SCALING_TYPE);
@@ -398,10 +406,11 @@ public class WebRTCView extends ViewGroup {
             VideoTrack videoTrack = getVideoTrack();
 
             if (videoTrack != null) {
-                videoTrack.removeSink(surfaceViewRenderer);
+                videoTrack.removeSink(rotationSink);
             }
 
             surfaceViewRenderer.release();
+            rotationSink.release();
             rendererAttached = false;
 
             // Since this WebRTCView is no longer rendering anything, make sure
@@ -598,7 +607,7 @@ public class WebRTCView extends ViewGroup {
             }
 
             surfaceViewRenderer.init(sharedContext, rendererEvents);
-            videoTrack.addSink(surfaceViewRenderer);
+            videoTrack.addSink(rotationSink);
 
             rendererAttached = true;
         }
