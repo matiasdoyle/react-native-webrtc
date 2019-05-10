@@ -166,6 +166,8 @@ public class WebRTCView extends ViewGroup {
      */
     private VideoRotationSink rotationSink;
 
+    private boolean forceRotation;
+
     /**
      * The {@code VideoTrack}, if any, rendered by this {@code WebRTCView}.
      */
@@ -583,6 +585,11 @@ public class WebRTCView extends ViewGroup {
         }
     }
 
+    public void setForceRotation(boolean forceRotation) {
+        this.forceRotation = forceRotation;
+        rotationSink.forceRotation = forceRotation;
+    }
+
     /**
      * Starts rendering {@link #videoTrack} if rendering is not in progress and
      * all preconditions for the start of rendering are met.
@@ -607,6 +614,7 @@ public class WebRTCView extends ViewGroup {
 
             surfaceViewRenderer.init(sharedContext, rendererEvents);
             videoTrack.addSink(rotationSink);
+            rotationSink.forceRotation = forceRotation;
 
             rendererAttached = true;
         }

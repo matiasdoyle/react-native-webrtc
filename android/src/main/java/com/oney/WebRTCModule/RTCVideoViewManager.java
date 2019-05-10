@@ -73,4 +73,9 @@ public class RTCVideoViewManager extends SimpleViewManager<WebRTCView> {
   public void setZOrder(WebRTCView view, int zOrder) {
     view.setZOrder(zOrder);
   }
+
+  @ReactProp(name = "forceRotation")
+  public void setForceRotation(WebRTCView view, boolean forceRotation) {
+    view.setForceRotation(forceRotation);
+  }
 }
